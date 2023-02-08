@@ -1,0 +1,18 @@
+body{
+    background-color: aquamarine;
+    margin: 0;
+}
+ul{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    list-style: none;
+}
+.thumnail-img{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+ul li{
+    margin: 10px;
+}
