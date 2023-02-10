@@ -1,71 +1,91 @@
-<?php 
+<?php
 /**
- * @package CustomPlugin
- */
-/*
- plugin Name: Custom Plugin
- plugin URI: http://.......
- Description: First plugin
- Version: 1.0
- Author: Kiptoo
- Author URI: http://jonah
- License: GPLv2 or Later
- Text Domain: custom-plugin
+ *  @package Custom-User-Registration
  */
 
- /*
- Securing a plugin
- method 1
+/*
+    Plugin Name: User Registration
+    Plugin URI: http://.............
+    Description: This is my user registration plugin
+    Version: 1.0.0
+    Author: Jonah
+    Author URI: http://.........
+    Licence: GPLv2 or later
+    Text Domain: user-registration
+*/
+
+/**
+ * Securing A plugin
  */
-if(!defined('ABSPATH')){
-    die;
-}
- /*
- Securing a plugin
- method 2
- */
-defined('ABSPATH') or die('Got you!');
- /*
- Securing a plugin
- method 3
- */
-if(!function_exists('add_action')){
-    echo 'Got you!';
-    exit;
-}
-class CustomPlugin{
+
+defined('ABSPATH') or die('Hey you hacker, got you!');
+
+
+
+class UserReg{
     function __construct(){
-        add_action('init', array($this, 'custom_post_type'));
+        $this->pass_data_to_db();   
     }
+
     function activate(){
-        //rewrites the flush rules
-        // echo 'The plugin was activated';
-        $this->custom_post_type();
+        $this->create_table_to_db();
         flush_rewrite_rules();
     }
+
     function deactivate(){
-        //flush rewrite rules
-        // echo 'The Plugin is deactivated';
+        // flush rewrite rules
         flush_rewrite_rules();
-}
-//unistalling plugin
-    function uninstall_plugin()
-    {
+    }
+
+    function create_table_to_db(){
+        global $wpdb;
+
+        $table_name = $wpdb->prefix.'users';
+        // $charset = $wpdb->get_charset_collate();
+
+        $user_details = "CREATE TABLE ".$table_name."(
+            username text NOT NULL,
+            useremail text NOT NULL,
+            userphone text NOT NULL,
+            userpassword text NOT NULL
+        );";
+
+        // $user_details = "CREATE TABLE `wp_users` (name text NOT NULL, email text NOT NULL, phone text NOT NULL, password text NOT NULL)";
+
+        require_once(ABSPATH.'wp-admin/includes/upgrade.php');
+        dbDelta($user_details);
+    }
+
+    function pass_data_to_db(){
+        if (isset($_POST['submitbtn'])){
+            $data = array(
+                'username'=>$_POST['username'],
+                'useremail'=>$_POST['useremail'],
+                'userphone'=>$_POST['userphone'],
+                'userpassword'=>$_POST['userpassword']
+            );
+            global $wpdb;
+            $tableName= 'wp_users';
+            $result = $wpdb->insert($tableName, $data, $format=NULL);
         
-    }
-//creating custom post type
-    function custom_post_type(){
-        register_post_type(
-            'book',
-            ['public' => true, 'label'=>'Books']
-        );
+            if($result == true){
+                echo "<script>alert('User Registered Successfully');</script>";
+            }else{
+                echo "<script>alert('Unable to Register');</script>";
+            }
+        }
     }
 }
-if (class_exists('CustomPlugin')) {
-    $custoPluginInstance = new CustomPlugin();
-}//activation
-register_activation_hook(__FILE__,array($custoPluginInstance, 'activate'));
-//deactivate function
-register_deactivation_hook(__FILE__, array($custoPluginInstance, 'deactivate'));
-// register_uninstall_hook(__FILE__,array($custoPluginInstance),'uninstall_plugin');
-?>
+
+if (class_exists('UserReg')){
+    $userRegInstance = new UserReg();
+}
+
+//activation
+register_activation_hook(__FILE__, array($userRegInstance, 'activate'));
+
+//deactivate
+register_deactivation_hook(__FILE__, array($userRegInstance, 'deactivate'));
+
+//
+// register_uninstall_hook(__FILE__, array($userRegInstance, 'uninstall'));
