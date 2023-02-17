@@ -1,0 +1,11 @@
+{
+    "name": "meeky/class-as-service",
+    "description": "This is my file",
+    "authors": [
+        {
+            "name": "Jonah"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

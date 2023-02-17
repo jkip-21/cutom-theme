@@ -66,16 +66,16 @@ Custom post type
 
 function custom_post_type(){
     $labels = array(
-        'name' => 'portfolio',
-        'singular_name' => 'Portfolio',
-        'add_new'=>'Add Item',
-        'all_item'=>'All Items',
-        'edit_item'=>'Edit Item',
-        'view_item'=>'View Item',
-        'search_item'=>'Search Portfolio',
-        'not_found'=>'No Portfolio found',
-        'not_found_in_trash'=>"No items found in trash",
-        'Parent_item_colon'=>'Parent Item'
+        'name' => 'Employee',
+        'singular_name' => 'Employee',
+        'add_new'=>'Add Employee',
+        'all_employee'=>'All Employee',
+        'edit_employee'=>'Edit Employee',
+        'view_employee'=>'View Employee',
+        'search_employee'=>'Search Employee',
+        'not_found'=>'No Employee found',
+        'not_found_in_trash'=>"No Employee found in trash",
+        'Parent_employee_colon'=>'Parent Employee'
     );
     $args = array(
         'labels'=>$labels,
@@ -91,51 +91,53 @@ function custom_post_type(){
         'menu_position'=>5,
         'exclude_from_search'=>false
     );
-    register_post_type('portfolio', $args);
+    register_post_type('employee', $args);
 }
 //init decides when a function is going to be invoced
 add_action('init', 'custom_post_type');
 
-// custom taxonomy
-function custom_taxonomy()
-{
-    $label = array(
-        'name'=> 'Professions',
-        'singular_name'=> 'Profession',
-        'search_item'=>'Search Profession',
-        'all_items'=>'All Proffesions',
-        'parent_item'=>'Parent Profession',
-        'parent_item_colon'=>'Parent Profession:',
-        'edit_item'=>'Edit Proffession',
-        'update_item'=>'Update Proffession',
-        'add_new_profession'=> 'Add Profession',
-        'dd_item_name'=>'New Profession Name',
-        'menu_name'=>'Proffesions'
+/*
+ =========================================
+    Custom Taxonomy
+ =========================================
+*/
+
+function custom_taxonomy(){
+    $labels= array(
+        'name'=>'department',
+        'singular_name'=>'department',
+        'search_items'=>'Search department',
+        'all_items'=>'All departments',
+        'parent_item'=>'Parent department',
+        'parent_item_colon'=>'department',
+        'edit_item'=> 'Edit department',
+        'update_item'=>'Update department',
+        'add_new_item'=>'department',
+        'new_item_name'=> 'New department',
+        'menu_name'=>'departments'
     );
     $args = array(
-        'labels'=> $label,
+        'labels'=>$labels,
         'hierarchical'=>true,
         'show_ui'=>true,
         'show_admin_column'=>true,
-        'query_var'=> true,
-        'rewrite'=>array('slug'=>'profession')
+        'query_var'=>true,
+        'rewrite'=>array('slug'=>'department')
+    );
 
-    );
-    register_taxonomy('profession', array('portfolio'), $args
-    );
-    //Add new taxonomy not hierarchical
-    register_taxonomy('tools', 'portfolio', array(
+    register_taxonomy('department', array('employee'), $args);
+    
+    // add new taxonomy NOT hierarchical
+
+    register_taxonomy('tools', 'department', array(
         'label'=>'Tools',
         'rewrite'=>array('slug'=>'tool'),
-        'hierarchical'=>false,
+        'hierarchical'=>false
     ));
 }
+
 add_action('init', 'custom_taxonomy');
-/*
- ===========
- custorm Term Function
- ===========
- */
+
 
 function custom_get_terms($postID, $term)
 {

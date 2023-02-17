@@ -17,15 +17,16 @@ get_header();
         <div class="form-group">
             <input type="tel" name="userphone" class="form-control input-sm mb-4" id="phone" placeholder="Input phone number">
         </div>
-        </div>
         <div class="form-group">
             <input type="password" name="userpassword" class="form-control input-sm mb-4" id="password" placeholder="Input password">
         </div>
         <div class="row justify-content-center">
             <div class="col-xs-4 col-sm-4 col-md-4">
-                <input type="submit" value="Register" name="submitbtn" class="">
+                <input type="submit" value="Register" name="submitbtn" class="btn btn-primary">
             </div>
         </div>
+        </div>
+       
     </form>
 </div>
 <?php get_footer();?>
