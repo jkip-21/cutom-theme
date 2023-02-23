@@ -4,8 +4,8 @@
  * @package ContactUs
  */
 /**
- * Plugin Name: Contact Us Plugin -c8
- * Plugin URI: http://kejje.....
+ * Plugin Name: Contact Us Plugin
+ * Plugin URI: http://jonah.....
  * Description: This is my contact plugin
  * version: 1.0.0
  * Author: Jonah
@@ -40,13 +40,14 @@ if (!class_exists('ContactUs')) {
         {
             global $wpdb;
 
-            $table_name= $wpdb->prefix.'contactus';
+            $table_name= $wpdb->prefix.'contact';
              $charset= $wpdb->get_charset_collate();
 
             $contactus="CREATE TABLE ".$table_name."(
-                name text NOT NULL,
+                username text NOT NULL,
                 email text NOT NULL,
-                message text NOT NULL
+                phone text NOT NULL,
+                password text NOT NULL
             )$charset;";
             require_once(ABSPATH.'wp-admin/includes/upgrade.php');
             dbDelta($contactus);
@@ -56,12 +57,13 @@ if (!class_exists('ContactUs')) {
         {
     if (isset($_POST['submitmsg'])) {
         $data = array(
-            'name'=>$_POST['name'],
+            'username'=>$_POST['username'],
             'email'=>$_POST['email'],
-            'message'=>$_POST['message']
+            'phone'=>$_POST['phone'],
+            'password'=>md5($_POST['password']),
         );
         global $wpdb;
-        $table_name=$wpdb->prefix.'contactus';
+        $table_name=$wpdb->prefix.'contact';
         $result=$wpdb->insert($table_name, $data, $format=null);
 
         if ($result == true) {
